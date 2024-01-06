@@ -19,7 +19,7 @@ def data_preprocessing(sentence):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/crawl/synthetic_train.csv', encoding='utf-8  ')
+    df = pd.read_csv('data/train.csv', encoding='utf-8  ')
     content_train = df.iloc[:, 0].values
     label_train = df.iloc[:, 1].values
     for i in range(len(content_train)):
@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
 
     # predict
-    df = pd.read_csv('data/crawl/synthetic_val.csv', encoding='utf-8  ')
+    df = pd.read_csv('data/test.csv', encoding='utf-8  ')
     content_val = df.iloc[:, 0].values
     label_val = df.iloc[:, 1].values
     for i in range(len(content_val)):
@@ -53,14 +53,13 @@ if __name__ == '__main__':
         if (label_val[i] == 'neutral'):
             continue
         emo = train.predict_emo(n_gram_freq, content_val[i])
-        print(emo, label_val[i])
+        # print(emo, label_val[i])
         if emo == label_val[i]:
             count += 1
     # sum without neutral
     sum_without_neutral = sum(label != 'neutral' for label in label_val ) 
     sum = len(label_val)
-    print(sum)
-    
+    print(sum_without_neutral)
     print(count/sum_without_neutral * 100, '%')
     
     

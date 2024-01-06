@@ -86,12 +86,9 @@ def predict_emo(n_gram_freq, sentence):
             log_pro['negative'] += np.log((n_gram_freq[word]['negative'] + 1) / (n_gram_freq[word]['frequency'] + len(n_gram_freq))*lamb[i])
             log_pro['neutral'] += np.log((n_gram_freq[word]['neutral'] + 1) / (n_gram_freq[word]['frequency'] + len(n_gram_freq))*lamb[i])
             
-    # log_pro['positive'] *= -1
-    # log_pro['negative'] *= -1
-    # log_pro['neutral'] *= -1
-    print(log_pro)
+    
     if log_pro['positive'] >= log_pro['negative']:
         return 'positive'
     else:
         return 'negative'
-  
+    
