@@ -9,9 +9,7 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import train
 # read the file
-df = pd.read_csv('data/crawl/synthetic_train.csv', encoding='utf-8  ')
-content = df.iloc[:, 0].values
-label = df.iloc[:, 1].values
+
 def data_preprocessing(sentence):
     sentence = re.sub(r'[,!?;-]+', '.', str(sentence)) 
     sentence = sentence.lower()
@@ -21,28 +19,51 @@ def data_preprocessing(sentence):
 
 
 if __name__ == '__main__':
-    #change directly to content
-    for i in range(len(content)):
-        content[i] = data_preprocessing(content[i])
-    # for sentence in content:
-    #     print(sentence)
-    # init vocab
-    vocab = train.init_vocab(content)
-    # print(vocab)
-    # change all data that out of vocabulary to <unk>
-    n_gram = []
-    for sentence in content:
-        # for i in range(1,4):
-        n_gram += train.n_gram(sentence, 2)
-    #Count frequency of each n-gram
-    print(n_gram)
-    n_gram_freq = train.count_freq_n_gram(n_gram)
-    for sentence, second_dimension in n_gram_freq.items():
-        print(sentence, second_dimension)
-        
-    # lấy từng câu trong content ra để cộng trừ n-gram
+    df = pd.read_csv('data/crawl/synthetic_train.csv', encoding='utf-8  ')
+    content_train = df.iloc[:, 0].values
+    label_train = df.iloc[:, 1].values
+    for i in range(len(content_train)):
+        content_train[i] = data_preprocessing(content_train[i])
     
+    vocab = train.init_vocab(content_train)
 
+    # train
+    n_gram = []
+    for sentence in content_train:
+        for i in range(1,4):
+            n_gram += train.n_gram(sentence, i)
+    n_gram_freq = train.count_freq_n_gram(n_gram)
+    n_gram_freq = train.count_emotion(n_gram_freq,content_train, label_train)
+    # print positive, negative, neutral in n_gram_freq
+    # print(n_gram_freq)
+    # for key, value in n_gram_freq.items():
+    #     print(value)
+
+
+    # predict
+    df = pd.read_csv('data/crawl/synthetic_val.csv', encoding='utf-8  ')
+    content_val = df.iloc[:, 0].values
+    label_val = df.iloc[:, 1].values
+    for i in range(len(content_val)):
+        content_val[i] = data_preprocessing(content_val[i])
+    # print(content_val)
+    # print(label_val)
+    count = 0
+    for i in range(len(content_val)):
+        if (label_val[i] == 'neutral'):
+            continue
+        emo = train.predict_emo(n_gram_freq, content_val[i])
+        print(emo, label_val[i])
+        if emo == label_val[i]:
+            count += 1
+    # sum without neutral
+    sum_without_neutral = sum(label != 'neutral' for label in label_val ) 
+    sum = len(label_val)
+    print(sum)
+    
+    print(count/sum_without_neutral * 100, '%')
+    
+    
 
 
 
