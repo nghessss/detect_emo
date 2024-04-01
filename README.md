@@ -9,3 +9,5 @@ This application is designed to detect the emotions of "positive" and "negative"
     - Enter the text you want to analyze in the provided input field. 
     - Analyze Emotion: Enter do analyze the sentence
 - **View Results**: The application will display the predicted emotion (either "positive" or "negative") along with the probability score for each emotion.
+## Accuracy
+**Precision:** 90.5%
