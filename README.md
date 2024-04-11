@@ -9,4 +9,5 @@ Emotion Detection: The application accurately identifies whether a given sentenc
 * Training: The model is trained on labeled datasets to learn the complex relationships between words and emotions.
 * View Results: Users can access predicted sentiments ("positive," "negative," or "neutral") along with confidence scores indicating the certainty of each prediction.
 Accuracy
-Precision: Significantly improved, achieving an accuracy of 74.5% after training with deep learning neural networks.
+
+**Precision:** Significantly improved, achieving an accuracy of 74.5% after training with deep learning neural networks.
